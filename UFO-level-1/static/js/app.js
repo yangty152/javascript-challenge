@@ -25,11 +25,12 @@ function handleChange() {
     // Prevent the page from refreshing
     d3.event.preventDefault();
     // grab the value of the input field
-    var inputElement = d3.select("#datetime");
-    var inputText = inputElement.property("value");
-    console.log(inputText)
-    var filteredData = tableData.filter(tableData => tableData.datetime === inputText);
-    console.log(filteredData)
+    var datetimeElement = d3.select("#datetime");
+    var datetimeValue = datetimeElement.property("value");
+    var filteredData = tableData.filter(tableData => tableData.datetime === datetimeValue);
+    console.log(filteredData);
+    
+    //Display filtered data in the table
     filteredData.forEach(function(row){
         
         console.log(row);
