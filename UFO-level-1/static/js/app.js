@@ -18,14 +18,18 @@ data.forEach(function(row){
     });
 
 var button =d3.select("#filter-btn");
-function handleChange(event) {
+// Select the form
+var form = d3.select("form");
+function handleChange() {
+    // Prevent the page from refreshing
+    d3.event.preventDefault();
     // grab the value of the input field
-    var inputText = d3.event.target.value;
+    var inputElement = d3.select("#datetime");
+    var inputText = inputElement.property("value");
     console.log(inputText)
-    data.forEach(function(row){
-        Object.entries(row).forEach(function([key,value]){
-        }
-    };
-  };
+    var filteredData = tableData.filter(tableData => tableData.datetime === inputText);
+    console.log(filteredData)
+};
   
   button.on("click", handleChange);
+  form.on("submit",handleChange);
