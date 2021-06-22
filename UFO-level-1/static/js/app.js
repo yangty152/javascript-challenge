@@ -31,7 +31,7 @@ function handleChange() {
         var filteredData = tableData.filter(tableData => tableData.datetime === datetimeValue);
         console.log(filteredData);
         //Display filtered data in the table
-    filteredData.forEach(function(row){
+        filteredData.forEach(function(row){
         
         console.log(row);
         var tr = tbody.append("tr");

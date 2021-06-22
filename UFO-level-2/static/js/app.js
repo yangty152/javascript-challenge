@@ -11,17 +11,16 @@ var tbody = d3.select("tbody");
 
 // YOUR CODE HERE!
 data.forEach(function(row){
-    console.log(row);
     var tr = tbody.append("tr");
 
     Object.entries(row).forEach(function([key, value]){
-        console.log(key,value);
         var cell =tr.append("td");
         cell.text(value);
         });
     });
 
-var button =d3.select("#filter-btn");
+var button1 =d3.select("#filter-btn");
+var button2 =d3.select("#clear-filter-btn");
 // Select the form
 var form = d3.select("form");
 function handleChange() {
@@ -39,19 +38,30 @@ function handleChange() {
     var countryValue = countryElement.property("value");
     var shapeElement = d3.select("#shape");
     var shapeValue = shapeElement.property("value");
-    if (datetimeValue!==null || cityValue!==null || stateValue!==null || countryValue!==null || shapeValue!==null){
-        
+    //var dict = []
+    var filters = new Object();
+    if (datetimeValue !== ""){
+        filters["datetime"]=datetimeValue;
     }
-    if (datetimeValue!==null && cityValue!==null && stateValue!==null && countryValue!==null && shapeValue!==null)
-    {
-        var filteredData = tableData.filter((tableData => tableData.datetime === datetimeValue) && (tableData => tableData.city === cityValue)&&(tableData => tableData.state === stateValue)&&
-        (tableData => tableData.country === countryValue)&&(tableData => tableData.shape === shapeValue))
+    if (cityValue !== ""){
+        filters["city"]=cityValue;
     }
-    //var filteredData = tableData.filter((tableData => tableData.datetime === datetimeValue)&&(tableData => tableData.city === cityValue))&&(tableData => tableData.state === stateValue)&&
-    //(tableData => tableData.country === countryValue)&&(tableData => tableData.shape === shapeValue));
-    console.log(filteredData)
+    if (stateValue !== ""){
+        filters["state"]=stateValue;
+    }
+    if (countryValue !== ""){
+        filters["country"]=countryValue;
+    }
+    if (shapeValue !== ""){
+        filters["shape"]=shapeValue;
+    }
+
+    var filteredData = tableData.filter(search, filters);
     
-    //Display filtered data in the table
+    function search(data){
+      return Object.keys(this).every((key) => data[key] === this[key]);
+    }
+
     filteredData.forEach(function(row){
         
         console.log(row);
@@ -62,8 +72,28 @@ function handleChange() {
             var cell =tr.append("td");
             cell.text(value);
             });
-        });
+    });
+    console.log(filteredData);
 };
-  
-  button.on("click", handleChange);
+
+function filterReset(){
+    d3.select("#datetime").property("value","");
+    d3.select("#city").property("value","");
+    d3.select("#state").property("value","");
+    d3.select("#country").property("value","");
+    d3.select("#shape").property("value","");
+    data.forEach(function(row){
+        console.log(row);
+        var tr = tbody.append("tr");
+    
+        Object.entries(row).forEach(function([key, value]){
+            console.log(key,value);
+            var cell =tr.append("td");
+            cell.text(value);
+            });
+        });
+}
+
+  button1.on("click", handleChange);
+  button2.on("click", filterReset);
   form.on("submit",handleChange);
