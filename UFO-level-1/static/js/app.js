@@ -27,10 +27,10 @@ function handleChange() {
     // grab the value of the input field
     var datetimeElement = d3.select("#datetime");
     var datetimeValue = datetimeElement.property("value");
-    var filteredData = tableData.filter(tableData => tableData.datetime === datetimeValue);
-    console.log(filteredData);
-    
-    //Display filtered data in the table
+    if (datetimeValue !== ""){
+        var filteredData = tableData.filter(tableData => tableData.datetime === datetimeValue);
+        console.log(filteredData);
+        //Display filtered data in the table
     filteredData.forEach(function(row){
         
         console.log(row);
@@ -42,6 +42,21 @@ function handleChange() {
             cell.text(value);
             });
         });
+    }
+    
+    if(datetimeValue === ""){
+        data.forEach(function(row){
+            console.log(row);
+            var tr = tbody.append("tr");
+        
+            Object.entries(row).forEach(function([key, value]){
+                console.log(key,value);
+                var cell =tr.append("td");
+                cell.text(value);
+                });
+            });
+    }
+    
 };
   
   button.on("click", handleChange);
